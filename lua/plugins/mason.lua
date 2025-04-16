@@ -14,8 +14,8 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",     -- Lua
-          "tsserver",   -- JavaScript/TypeScript
-          "pyright",    -- Python
+	  "ts_ls",
+	  "pyright",    -- Python
         },
         automatic_installation = true,
       })
