@@ -1,14 +1,18 @@
+vim.opt.showmode = false
 vim.o.guifont = "Hack Nerd Font:h12"
 
-vim.opt.showmode = false
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
     "lewis6991/gitsigns.nvim",
+    "SmiteshP/nvim-navic",  -- Navic for breadcrumb navigation
   },
   event = "VeryLazy",
   config = function()
+
+    local navic = require("nvim-navic")
+
     local colors = {
       bg       = "#1e1e2e",
       fg       = "#cdd6f4",
@@ -26,7 +30,7 @@ return {
       i = colors.pink,
       v = colors.magenta,
       V = colors.magenta,
-      [""] = colors.magenta,
+      ["\22"] = colors.magenta,  -- Visual block (CTRL+V)
       c = colors.orange,
       R = colors.red,
       t = colors.cyan,
@@ -41,7 +45,6 @@ return {
       end,
     }
 
-    -- main config table defined first
     local config = {
       options = {
         theme = "auto",
@@ -52,15 +55,15 @@ return {
       sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = {},
-        lualine_x = {},
+        lualine_c = {},  -- Put folder path here
+        lualine_x = {},  -- Right section, for diagnostics and diff
         lualine_y = { "encoding", "fileformat", "filetype" },
         lualine_z = { "location" },
       },
       inactive_sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = { "filename" },
+        lualine_c = {},
         lualine_x = { "location" },
         lualine_y = {},
         lualine_z = {},
@@ -68,7 +71,6 @@ return {
       extensions = {},
     }
 
-    -- now helpers can safely use `config`
     local function ins_left(component)
       table.insert(config.sections.lualine_c, component)
     end
@@ -80,68 +82,95 @@ return {
     -- MODE
     ins_left({
       function()
-        local mode = vim.fn.mode()
-        local map = {
+        local mode_map = {
           n = "NORMAL",
           i = "INSERT",
           v = "VISUAL",
           V = "V-LINE",
-          [""] = "V-BLOCK",
+          ["\22"] = "V-BLOCK",
           c = "COMMAND",
           R = "REPLACE",
           t = "TERMINAL",
         }
-        return " " .. (map[mode] or mode) .. " "
+        local mode = vim.fn.mode()
+        return " " .. (mode_map[mode] or mode) .. " "
       end,
       color = function()
         local mode = vim.fn.mode()
-        return { fg = colors.bg, bg = mode_color[mode] or colors.pink, gui = "bold" }
+        return {
+          fg = colors.bg,
+          bg = mode_color[mode] or colors.pink,
+          gui = "bold"
+        }
       end,
       padding = { left = 1, right = 1 },
     })
 
-    -- FILENAME
+    -- FOLDER PATH (relative to cwd) in lualine_c
     ins_left({
-      "filename",
-      path = 1, -- relative path
+      function()
+        -- Get the relative path from the current file
+        return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h"):sub(#vim.fn.getcwd() + 2)  -- Remove cwd prefix
+      end,
       color = { fg = colors.cyan, gui = "bold" },
       cond = conditions.buffer_not_empty,
     })
 
-    -- BRANCH
+    -- FILENAME (just the filename)
+    ins_left({
+      function()
+        return vim.fn.expand('%:t') -- Only display the file name (not the full path)
+      end,
+      color = { fg = colors.magenta, gui = "bold" },
+      cond = conditions.buffer_not_empty,
+    })
+
+    -- GIT BRANCH
     ins_left({
       "branch",
       icon = "",
       color = { fg = colors.magenta, gui = "bold" },
     })
 
-    -- GIT DIFF
+    -- NAVIC BREADCRUMB (if available)
     ins_left({
-      "diff",
-      symbols = { added = " ", modified = " ", removed = " " },
-      diff_color = {
-        added = { fg = colors.green },
-        modified = { fg = colors.orange },
-        removed = { fg = colors.red },
-      },
-      cond = conditions.hide_in_width,
+      function()
+        return navic.is_available() and navic.get_location() or ""
+      end,
+      color = { fg = colors.yellow },
+      cond = function()
+        return package.loaded["nvim-navic"] and navic.is_available()
+      end,
     })
 
-    -- DIAGNOSTICS
-    ins_left({
+    -- DIAGNOSTICS (moved to the right)
+    ins_right({
       "diagnostics",
       sources = { "nvim_diagnostic" },
       symbols = { error = " ", warn = " ", info = " " },
       diagnostics_color = {
         color_error = { fg = colors.red },
-        color_warn = { fg = colors.yellow },
-        color_info = { fg = colors.cyan },
+        color_warn  = { fg = colors.yellow },
+        color_info  = { fg = colors.cyan },
       },
     })
 
-    -- RIGHT ALIGN SEPARATOR
-    ins_left({ function() return "%=" end })
+    -- GIT DIFF (moved to the right)
+    ins_right({
+      "diff",
+      symbols = { added = " ", modified = " ", removed = " " },
+      diff_color = {
+        added    = { fg = colors.green },
+        modified = { fg = colors.orange },
+        removed  = { fg = colors.red },
+      },
+      cond = conditions.hide_in_width,
+    })
+
+    -- ALIGN RIGHT
+    ins_right({ function() return "%=" end })
 
     require("lualine").setup(config)
   end,
 }
+
