@@ -3,6 +3,7 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       "hrsh7th/nvim-cmp",
+      {"hrsh7th/cmp-buffer", event = "InsertEnter"},
     },
     config = function()
       local lspconfig = require("lspconfig")
