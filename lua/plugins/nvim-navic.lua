@@ -7,8 +7,8 @@ return {
   config = function()
     require("nvim-navic").setup({
       highlight = true,
-      separator = " > ", -- customize your breadcrumb style here
-      depth_limit = 0, -- 0 = no limit
+      separator = "|", -- customize your breadcrumb style here
+      depth_limit = 3, -- 0 = no limit
       icons = {
         File          = " ",
         Module        = " ",

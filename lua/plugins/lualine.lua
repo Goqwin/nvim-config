@@ -67,7 +67,7 @@ return {
                 gui = "bold",
               }
             end,
-            padding = { left = 1, right = 1 },
+            padding = { left = 4, right = 4 },
           },
         },
         lualine_b = {},
