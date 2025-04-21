@@ -2,6 +2,7 @@
 
 -- General settings
 local set = vim.opt
+vim.opt.showmode = false
 
 set.number = true                   -- Show line numbers
 set.syntax = "on"                   -- Enable syntax highlighting
@@ -11,7 +12,6 @@ set.expandtab = true                -- Use spaces instead of tabs
 set.smartindent = true              -- Enable smart indentation
 set.wrap = false                    -- Disable line wrapping
 set.cursorline = true               -- Highlight current line
-
 -- Search settings
 set.ignorecase = true               -- Ignore case in search
 set.smartcase = true                -- Case-sensitive search if input has uppercase
