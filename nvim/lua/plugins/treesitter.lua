@@ -4,7 +4,6 @@ return {
   config = function()
     local uv = vim.loop
 
-    -- 🔖 Profiles
     local profiles = {
       fullstack = { "html", "typescript", "json", "python" },
       backend   = { "go" },
@@ -13,7 +12,6 @@ return {
       rust      = { "rust" },
     }
 
-    -- 📁 Project detection
     local function detect_project()
       local function has(file)
         return uv.fs_stat(vim.loop.cwd() .. "/" .. file) ~= nil
@@ -32,7 +30,6 @@ return {
       end
     end
 
-    -- 🔧 Setup Treesitter with selected profile
     local function apply_profile(profile_key)
       local langs = profiles[profile_key]
       if not langs then
@@ -81,4 +78,7 @@ return {
     })
   end,
 }
-
+-- :TSProfileAuto
+-- :TSProfileFullstack  # Applies the "fullstack" profile
+-- :TSProfileRust       # Applies the "rust" profile
+-- :TSProfileArduino    # Applies the "arduino" profile
