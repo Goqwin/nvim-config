@@ -1,49 +1,30 @@
-# TMUX COMMANDS
+# Tmux Commands
 
-### **Session Management**
-tmux - Start a new tmux session.
-tmux new -s <session_name> - Create a new session with a specific name.
-tmux attach - Reattach to the most recently used session.
-tmux attach -t <session_name> - Attach to a specific session.
-tmux detach - Detach from the current session.
-tmux list-sessions or tmux ls - List all active sessions.
-tmux kill-session -t <session_name> - Kill a specific session.
-tmux kill-server - Kill all tmux sessions.
+## Session Management
+- **Start a new tmux session**: `tmux`
+- **Start a new named session**: `tmux new -s session_name`
+- **List all sessions**: `tmux ls`
+- **Attach to a specific session**: `tmux attach -t session_name`
+- **Detach from a session**: `tmux detach`
+- **Kill a session**: `tmux kill-session -t session_name`
 
-### **Window Management**
-Ctrl-b c - Create a new window.
-Ctrl-b n - Switch to the next window.
-Ctrl-b p - Switch to the previous window.
-Ctrl-b w - List all windows.
-Ctrl-b , - Rename the current window.
-Ctrl-b & - Close the current window.
+## Window Management
+- **Create a new window**: `tmux new-window`
+- **Rename a window**: `tmux rename-window new_name`
+- **Switch between windows**: `tmux select-window -t window_number`
+- **Kill a window**: `tmux kill-window -t window_number`
 
-### **Pane Management**
-Ctrl-b % - Split the current pane horizontally.
-Ctrl-b " - Split the current pane vertically.
-Ctrl-b o - Switch to the next pane.
-Ctrl-b q - Display pane numbers for quick selection.
-Ctrl-b x - Close the current pane.
-Ctrl-b z - Toggle zoom for the current pane.
-Ctrl-b { or Ctrl-b } - Swap panes.
+## Pane Management
+- **Split a window horizontally**: `tmux split-window`
+- **Split a window vertically**: `tmux split-window -h`
+- **Switch between panes**: `tmux select-pane -t pane_number`
+- **Resize a pane**:
+  - `tmux resize-pane -L` (Resize left)
+  - `tmux resize-pane -R` (Resize right)
+  - `tmux resize-pane -U` (Resize up)
+  - `tmux resize-pane -D` (Resize down)
+- **Kill a pane**: `tmux kill-pane -t pane_number`
 
-### **Resizing Panes**
-Ctrl-b <arrow keys> - Resize panes in the direction of the arrow key.
-Ctrl-b Ctrl-<arrow keys> - Resize panes more precisely.
-
-### **Copy Mode**
-Ctrl-b [ - Enter copy mode to scroll through the buffer.
-Ctrl-b ] - Paste the copied text.
-Ctrl-b Space - Start text selection in copy mode.
-Enter - Copy the selected text.
-
-### **Customization and Configuration**
-tmux source-file ~/.tmux.conf - Reload the tmux configuration file.
-tmux list-keys - List all key bindings.
-tmux list-commands - List all available tmux commands.
-
-### **Miscellaneous**
-Ctrl-b d - Detach from the current session.
-Ctrl-b t - Show the current time.
-Ctrl-b ? - Display a list of all key bindings.
-
+## History and Configuration
+- **Scroll through history**: `tmux copy-mode`
+- **Save configuration changes**: `tmux source-file ~/.tmux.conf`
