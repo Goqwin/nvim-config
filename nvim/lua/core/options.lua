@@ -38,3 +38,6 @@ set.timeoutlen = 500                -- Timeout length for mappings
 
 -- File encoding settings
 set.fileencoding = "utf-8"          -- Default file encoding
+
+-- Font Setup (Test)
+set.guifont ="Hack Font:12"
