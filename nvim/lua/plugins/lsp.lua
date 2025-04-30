@@ -4,7 +4,6 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
-      "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
       require("mason").setup()
@@ -33,9 +32,17 @@ return {
             },
           },
         },
-        rust_analyzer = {},
+        rust_analyzer = {
+          settings = {
+            ["rust-analyzer"] = {
+              checkOnSave = { command = "clippy" },
+              cargo = { allFeatures = true },
+              diagnostics = { enable = true },
+            },
+          },
+        },
         pyright = {},
-        ts_ls = {}, 
+        ts_ls = {},
         clangd = {},
         gopls = {},
         html = {},
