@@ -14,7 +14,7 @@ return {
           "lua_ls",          
           "rust_analyzer",   
           "pyright",         
-          "tsserver",        
+          "ts_ls",        
           "clangd",          
           "gopls",           
           "html",           
@@ -54,7 +54,7 @@ return {
             },
           },
         },
-        tsserver = {
+        ts_ls = {
           settings = {
             javascript = {
               format = { enable = true },
@@ -93,13 +93,11 @@ return {
         },
       }
 
-      
       for name, config in pairs(servers) do
         config.capabilities = capabilities
         lspconfig[name].setup(config)
       end
 
-      
       vim.diagnostic.config({
         virtual_text = true,  
         signs = true,         
