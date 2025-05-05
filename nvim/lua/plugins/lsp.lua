@@ -7,16 +7,18 @@ return {
     },
     config = function()
       require("mason").setup()
+
+    
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "lua_ls",
-          "rust_analyzer",
-          "pyright",
-          "ts_ls",
-          "clangd",
-          "gopls",
-          "html",
-          "marksman",
+          "lua_ls",          
+          "rust_analyzer",   
+          "pyright",         
+          "tsserver",        
+          "clangd",          
+          "gopls",           
+          "html",           
+          "marksman",        
         },
       })
 
@@ -35,24 +37,77 @@ return {
         rust_analyzer = {
           settings = {
             ["rust-analyzer"] = {
-              checkOnSave = true,  
+              checkOnSave = true,
               cargo = { allFeatures = true },
               diagnostics = { enable = true },
             },
           },
         },
-        pyright = {},
-        ts_ls = {},
-        clangd = {},
-        gopls = {},
-        html = {},
-        marksman = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = "strict", 
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
+        },
+        tsserver = {
+          settings = {
+            javascript = {
+              format = { enable = true },
+            },
+            typescript = {
+              format = { enable = true },
+            },
+          },
+        },
+        clangd = {
+          cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=never" },
+        },
+        gopls = {
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true,
+              },
+              staticcheck = true,
+            },
+          },
+        },
+        html = {
+          settings = {
+            html = {
+              format = { enable = true },
+            },
+          },
+        },
+        marksman = {
+          settings = {
+            marksman = {
+              linter = true,
+            },
+          },
+        },
       }
 
+      
       for name, config in pairs(servers) do
         config.capabilities = capabilities
         lspconfig[name].setup(config)
       end
+
+      
+      vim.diagnostic.config({
+        virtual_text = true,  
+        signs = true,         
+        underline = true,     
+        update_in_insert = true,
+        severity_sort = true,
+      })
     end,
   },
 }
+
