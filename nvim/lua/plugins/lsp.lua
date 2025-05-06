@@ -8,17 +8,17 @@ return {
     config = function()
       require("mason").setup()
 
-    
+
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "lua_ls",       
-          "rust_analyzer",   
-          "pyright",         
-          "ts_ls",        
-          "clangd",          
-          "gopls",           
-          "html",           
-          "marksman",        
+          "lua_ls",
+          "rust_analyzer",
+          "pyright",
+          "ts_ls",
+          "clangd",
+          "gopls",
+          "html",
+          "marksman",
         },
       })
 
@@ -99,9 +99,9 @@ return {
       end
 
       vim.diagnostic.config({
-        virtual_text = true,  
-        signs = true,         
-        underline = true,     
+        virtual_text = true,
+        signs = true,
+        underline = true,
         update_in_insert = true,
         severity_sort = true,
       })
