@@ -11,7 +11,7 @@ return {
     
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "lua_ls",          
+          "lua_ls",       
           "rust_analyzer",   
           "pyright",         
           "ts_ls",        
@@ -47,7 +47,7 @@ return {
           settings = {
             python = {
               analysis = {
-                typeCheckingMode = "strict", 
+                typeCheckingMode = "strict",
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
               },
